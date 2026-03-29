@@ -90,19 +90,17 @@ export default function Home() {
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[120px] pointer-events-none z-0"></div>
       <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/15 blur-[120px] pointer-events-none z-0"></div>
 
-
       <header className="border-b border-zinc-800/50 bg-zinc-950/70 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 flex justify-between items-center relative z-10 h-16 md:h-20">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center relative z-10 h-20 md:h-24">
           
-
-          <div className="flex items-center gap-3 md:gap-4 h-full">
-            <div className="relative w-14 h-14 md:w-16 md:h-16 flex-shrink-0">
+          <div className="flex items-center gap-4 cursor-pointer">
+            <div className="relative w-20 h-20 md:w-24 md:h-24 flex-shrink-0">
               <Image 
                 src="/logo-ghost.png" 
                 alt="Logo Ghost Informática"
                 fill
                 className="object-contain"
-                sizes="(max-width: 64px) 100vw, 64px"
+                sizes="(max-width: 96px) 100vw, 96px"
                 priority
               />
             </div>
@@ -130,7 +128,6 @@ export default function Home() {
       </header>
 
       <main className="flex-grow relative z-10">
-
         <section id="inicio" className="max-w-5xl mx-auto px-6 py-24 md:py-32 text-center md:text-left flex flex-col items-center md:items-start">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
             Soluções completas em <br className="hidden md:block" />
