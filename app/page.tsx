@@ -85,22 +85,20 @@ export default function Home() {
   return (
     <div className="relative min-h-screen flex flex-col bg-zinc-950 text-zinc-50 font-sans selection:bg-blue-500/30 overflow-hidden">
       
-      {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
       
-      {/* Decorative Blur Blobs */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[120px] pointer-events-none z-0"></div>
       <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/15 blur-[120px] pointer-events-none z-0"></div>
 
-      {/* Header Atualizado com Altura Corrigida */}
+
       <header className="border-b border-zinc-800/50 bg-zinc-950/70 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-5xl mx-auto px-6 flex justify-between items-center relative z-10 h-16 md:h-20">
           
-          {/* Logo Section - Corrigida: Maior e sem animação */}
+
           <div className="flex items-center gap-3 md:gap-4 h-full">
             <div className="relative w-14 h-14 md:w-16 md:h-16 flex-shrink-0">
               <Image 
-                src="/Logo Ghost.png" 
+                src="/logo-ghost.png" 
                 alt="Logo Ghost Informática"
                 fill
                 className="object-contain"
@@ -109,7 +107,6 @@ export default function Home() {
               />
             </div>
             
-            {/* Texto - Voltou ao estilo antigo (Inter, sem itálico/caps, ponto azul) */}
             <span className="text-xl md:text-2xl font-bold text-white">
               Ghost<span className="text-blue-500">.informática</span>
             </span>
@@ -133,7 +130,7 @@ export default function Home() {
       </header>
 
       <main className="flex-grow relative z-10">
-        {/* Restante do conteúdo igual ao seu arquivo anterior */}
+
         <section id="inicio" className="max-w-5xl mx-auto px-6 py-24 md:py-32 text-center md:text-left flex flex-col items-center md:items-start">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
             Soluções completas em <br className="hidden md:block" />
