@@ -91,35 +91,35 @@ export default function Home() {
       <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/15 blur-[120px] pointer-events-none z-0"></div>
 
       <header className="border-b border-zinc-800/50 bg-zinc-950/70 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center relative z-10 h-20 md:h-24">
+        <div className="max-w-6xl mx-auto px-6 flex justify-between items-center relative z-10 h-32 md:h-40">
           
-          <div className="flex items-center gap-4 cursor-pointer">
-            <div className="relative w-20 h-20 md:w-24 md:h-24 flex-shrink-0">
+          <div className="flex items-center gap-6 cursor-pointer">
+            <div className="relative w-32 h-32 md:w-48 md:h-48 flex-shrink-0">
               <Image 
                 src="/logo-ghost.png" 
                 alt="Logo Ghost Informática"
                 fill
                 className="object-contain"
-                sizes="(max-width: 96px) 100vw, 96px"
+                sizes="(max-width: 192px) 100vw, 192px"
                 priority
               />
             </div>
             
-            <span className="text-xl md:text-2xl font-bold text-white">
+            <span className="text-3xl md:text-5xl font-black text-white tracking-tighter">
               Ghost<span className="text-blue-500">.informática</span>
             </span>
           </div>
 
-          <div className="flex items-center gap-4 md:gap-6">
-            <nav className="hidden md:flex gap-6 text-zinc-400 font-medium text-sm">
-              <a href="#inicio" className="hover:text-white transition-colors">Início</a>
-              <a href="#servicos" className="hover:text-white transition-colors">Serviços</a>
+          <div className="flex items-center gap-8 md:gap-12">
+            <nav className="hidden lg:flex gap-10 text-zinc-300 font-bold text-lg uppercase tracking-widest">
+              <a href="#inicio" className="hover:text-blue-500 transition-colors">Início</a>
+              <a href="#servicos" className="hover:text-blue-500 transition-colors">Serviços</a>
             </nav>
             
             <a 
               href="https://wa.me/5545999259633" 
               target="_blank" 
-              className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold py-2.5 px-6 rounded-full transition-all"
+              className="bg-blue-600 hover:bg-blue-500 text-white text-lg md:text-xl font-black py-4 px-10 rounded-2xl transition-all shadow-xl shadow-blue-600/20 hover:scale-105 active:scale-95"
             >
               Fale Comigo
             </a>
