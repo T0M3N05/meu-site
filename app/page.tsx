@@ -84,36 +84,32 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-zinc-950 text-zinc-50 font-sans selection:bg-blue-500/30 overflow-hidden">
-      
-      
+
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
-      
       
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[120px] pointer-events-none z-0"></div>
       <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/15 blur-[120px] pointer-events-none z-0"></div>
 
       <header className="border-b border-zinc-800/50 bg-zinc-950/70 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center relative z-10">
+        <div className="max-w-5xl mx-auto px-6 py-2 flex justify-between items-center relative z-10">
           
-          
-          <div className="text-xl font-bold flex items-center gap-4 cursor-pointer group">
-
-        <div className="relative w-20 h-20 overflow-hidden rounded-2xl border-2 border-zinc-800 group-hover:border-blue-500/50 group-hover:shadow-[0_0_15px_-3px_rgba(59,130,246,0.3)] transition-all duration-300">
-          <Image 
-          src="/logo-ghost.png" 
-          alt="Logo Ghost Informática"
-          fill
-          className="object-contain"
-          sizes="(max-width: 80px) 100vw, 80px"
-          priority
-          />
-      </div>
-
-  <span className="hidden sm:block text-2xl md:text-3xl font-extrabold tracking-tight">
-    Ghost<span className="text-blue-500">.informática</span>
-  </span>
-  <span className="sm:hidden text-2xl font-bold">Ghost</span>
-</div>
+          <div className="flex items-center gap-3 md:gap-4 cursor-pointer group py-2">
+            <div className="relative w-24 h-24 md:w-32 md:h-32 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+              <Image 
+                src="/logo-ghost.png" 
+                alt="Logo Ghost Informática"
+                fill
+                className="object-contain"
+                sizes="(max-width: 128px) 100vw, 128px"
+                priority
+              />
+            </div>
+            
+            <span className="hidden sm:block text-2xl md:text-4xl font-black tracking-tighter uppercase italic">
+              Ghost<span className="text-blue-500 ml-1">Informática</span>
+            </span>
+            <span className="sm:hidden text-xl font-black uppercase italic">Ghost</span>
+          </div>
 
           <div className="flex items-center gap-4 md:gap-6">
             <nav className="hidden md:flex gap-6 text-zinc-400 font-medium text-sm mr-2">
@@ -122,21 +118,9 @@ export default function Home() {
             </nav>
             
             <a 
-              href="https://www.instagram.com/ghost.informatica" 
+              href="https://wa.me/5545999259633" 
               target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-zinc-400 hover:text-pink-500 transition-colors"
-              title="Siga no Instagram"
-            >
-              <InstagramLogo className="w-5 h-5" />
-              <span className="hidden lg:block text-sm font-medium">@ghost.informática</span>
-            </a>
-
-            <a 
-              href="https://wa.me/5545999259633?text=Olá!%20Vim%20pelo%20seu%20site." 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold py-2 px-5 rounded-full transition-all hover:shadow-lg hover:shadow-blue-500/25 flex items-center gap-2"
+              className="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold py-2.5 px-6 rounded-full transition-all"
             >
               Fale Comigo
             </a>
@@ -145,7 +129,7 @@ export default function Home() {
       </header>
 
       <main className="flex-grow relative z-10">
-        
+
         <section id="inicio" className="max-w-5xl mx-auto px-6 py-24 md:py-32 text-center md:text-left flex flex-col items-center md:items-start">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
             Soluções completas em <br className="hidden md:block" />
@@ -180,11 +164,9 @@ export default function Home() {
                 className="group bg-zinc-900/40 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300"
               >
                 <div className="flex flex-col sm:flex-row gap-6 items-start">
-                  
                   <div className="bg-zinc-950/80 p-4 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 transition-colors flex-shrink-0">
                     {servico.icone}
                   </div>
-                  
                   <div className="flex-1 w-full">
                     <h3 className="text-xl font-bold mb-2 text-zinc-100 group-hover:text-blue-400 transition-colors">
                       {servico.titulo}
@@ -192,7 +174,6 @@ export default function Home() {
                     <p className="text-zinc-400 leading-relaxed text-sm md:text-base">
                       {servico.descricao}
                     </p>
-
                     {servico.classesSoftwares && (
                       <div className="overflow-hidden transition-all duration-700 ease-in-out max-h-0 opacity-0 group-hover:max-h-[800px] group-hover:opacity-100 group-hover:mt-6">
                         <div className="flex flex-col gap-6 border-t border-zinc-800/50 pt-6">
@@ -218,56 +199,36 @@ export default function Home() {
                         </div>
                       </div>
                     )}
-
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </section>
-
       </main>
 
       <footer className="border-t border-zinc-800/50 bg-zinc-950/80 backdrop-blur-md py-10 mt-12 relative z-10">
         <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
-          
           <div className="flex flex-col gap-4">
             <p className="text-zinc-500 text-sm">
               © 2026 Ghost Informática. Todos os direitos reservados.
             </p>
-            
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-              <a 
-                href="https://www.instagram.com/ghost.informatica" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-zinc-400 hover:text-pink-500 transition-colors text-sm font-medium"
-              >
-                <InstagramLogo className="w-5 h-5" />
-                @ghost.informática
+              <a href="https://www.instagram.com/ghost.informatica" target="_blank" className="flex items-center gap-2 text-zinc-400 hover:text-pink-500 transition-colors text-sm font-medium">
+                <InstagramLogo className="w-5 h-5" /> @ghost.informática
               </a>
-              
               <span className="hidden sm:block text-zinc-700">•</span>
-
-              <a 
-                href="https://wa.me/5545999259633?text=Olá!%20Vim%20pelo%20seu%20site." 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-zinc-400 hover:text-emerald-500 transition-colors text-sm font-medium"
-              >
-                <WhatsAppLogo className="w-5 h-5" />
-                (45) 99925-9633
+              <a href="https://wa.me/5545999259633" target="_blank" className="flex items-center gap-2 text-zinc-400 hover:text-emerald-500 transition-colors text-sm font-medium">
+                <WhatsAppLogo className="w-5 h-5" /> (45) 99925-9633
               </a>
             </div>
           </div>
-
           <div className="flex items-center gap-2 text-zinc-400 text-sm bg-zinc-900/80 py-2 px-4 rounded-full border border-zinc-800/50">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             Atendimento presencial e remoto!
           </div>
         </div>
       </footer>
-
     </div>
   );
 }
