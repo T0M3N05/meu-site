@@ -93,8 +93,8 @@ export default function Home() {
       <header className="border-b border-zinc-800/50 bg-zinc-950/70 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-[1440px] mx-auto px-8 flex justify-between items-center relative z-10 h-32 md:h-40">
           
-          <div className="flex items-center gap-6 cursor-pointer">
-            <div className="relative w-40 h-40 md:w-[220px] md:h-[220px] flex-shrink-0">
+          <div className="flex items-center cursor-pointer">
+            <div className="relative w-40 h-40 md:w-[220px] md:h-[220px] flex-shrink-0 -mr-4 md:-mr-8">
               <Image 
                 src="/logo-ghost.png" 
                 alt="Logo Ghost Informática"
@@ -106,7 +106,7 @@ export default function Home() {
             </div>
             
             <span className="text-3xl md:text-5xl font-black text-white tracking-tighter">
-              Ghost<span className="text-blue-500">.informática</span>
+              Ghost<span className="text-blue-500">.Informática</span>
             </span>
           </div>
 
