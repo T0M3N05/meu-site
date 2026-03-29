@@ -91,16 +91,16 @@ export default function Home() {
       <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/15 blur-[120px] pointer-events-none z-0"></div>
 
       <header className="border-b border-zinc-800/50 bg-zinc-950/70 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 flex justify-between items-center relative z-10 h-32 md:h-40">
+        <div className="max-w-[1440px] mx-auto px-8 flex justify-between items-center relative z-10 h-32 md:h-40">
           
           <div className="flex items-center gap-6 cursor-pointer">
-            <div className="relative w-32 h-32 md:w-48 md:h-48 flex-shrink-0">
+            <div className="relative w-40 h-40 md:w-[220px] md:h-[220px] flex-shrink-0">
               <Image 
                 src="/logo-ghost.png" 
                 alt="Logo Ghost Informática"
                 fill
                 className="object-contain"
-                sizes="(max-width: 192px) 100vw, 192px"
+                sizes="(max-width: 220px) 100vw, 220px"
                 priority
               />
             </div>
@@ -119,7 +119,7 @@ export default function Home() {
             <a 
               href="https://wa.me/5545999259633" 
               target="_blank" 
-              className="bg-blue-600 hover:bg-blue-500 text-white text-lg md:text-xl font-black py-4 px-10 rounded-2xl transition-all shadow-xl shadow-blue-600/20 hover:scale-105 active:scale-95"
+              className="bg-blue-600 hover:bg-blue-500 text-white text-lg md:text-xl font-black py-4 px-10 rounded-2xl transition-all shadow-xl shadow-blue-600/20"
             >
               Fale Comigo
             </a>
