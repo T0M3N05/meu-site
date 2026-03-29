@@ -96,18 +96,24 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center relative z-10">
           
           
-          <div className="text-xl font-bold flex items-center gap-3 cursor-pointer group">
-            <div className="relative w-10 h-10 overflow-hidden rounded-lg border border-zinc-800 group-hover:border-blue-500/50 transition-colors">
-              <Image 
-                src="/logo-ghost.png" 
-                alt="Logo Ghost Informática"
-                fill
-                className="object-contain p-1"
-              />
-            </div>
-            <span className="hidden sm:block">Ghost<span className="text-blue-500">.informática</span></span>
-            <span className="sm:hidden">Ghost</span>
-          </div>
+          <div className="text-xl font-bold flex items-center gap-4 cursor-pointer group">
+
+        <div className="relative w-20 h-20 overflow-hidden rounded-2xl border-2 border-zinc-800 group-hover:border-blue-500/50 group-hover:shadow-[0_0_15px_-3px_rgba(59,130,246,0.3)] transition-all duration-300">
+          <Image 
+          src="/logo-ghost.png" 
+          alt="Logo Ghost Informática"
+          fill
+          className="object-contain"
+          sizes="(max-width: 80px) 100vw, 80px"
+          priority
+          />
+      </div>
+
+  <span className="hidden sm:block text-2xl md:text-3xl font-extrabold tracking-tight">
+    Ghost<span className="text-blue-500">.informática</span>
+  </span>
+  <span className="sm:hidden text-2xl font-bold">Ghost</span>
+</div>
 
           <div className="flex items-center gap-4 md:gap-6">
             <nav className="hidden md:flex gap-6 text-zinc-400 font-medium text-sm mr-2">
