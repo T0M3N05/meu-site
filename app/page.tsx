@@ -1,5 +1,8 @@
-import { Monitor, Zap, Package, Rocket, Laptop, Server } from 'lucide-react';
+'use client';
+
+import { Monitor, Zap, Package, Rocket, Star, Quote, ChevronLeft, ChevronRight, Layout, ShoppingCart, Globe, Gauge, ShieldCheck, Database, Cpu, MousePointer2, ThermometerSun } from 'lucide-react';
 import Image from 'next/image';
+import { useRef } from 'react';
 
 const InstagramLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -13,30 +16,64 @@ const WhatsAppLogo = ({ className }: { className?: string }) => (
   </svg>
 );
 
+interface ItemDetalhe {
+  titulo: string;
+  subtitulo: string;
+  icone: React.ReactNode;
+}
+
 interface Servico {
   id: number;
   titulo: string;
   descricao: string;
   icone: React.ReactNode;
+  detalhes?: ItemDetalhe[];
   classesSoftwares?: {
     classe: string;
     softwares: { nome: string; sigla: string; cor: string }[];
   }[];
 }
 
+const depoimentos = [
+  { id: 1, nome: "Leonardo", servico: "Otimização Gamer", texto: "Tava com um lag absurdo no CS. O cara mexeu em tudo, otimizou o Windows e agora o FPS cravou no talo. Recomendo demais!", avatar: "T" },
+  { id: 2, nome: "Carla Vasconcelos", servico: "Formatação + Backup", texto: "Meu notebook parou do nada. Fiquei desesperada pelos arquivos, mas ele recuperou tudo e o PC tá ligando em segundos.", avatar: "CV" },
+  { id: 3, nome: "Eng. Ricardo Lima", servico: "Softwares Engenharia", texto: "Instalou o pack completo do AutoCAD e SketchUp. Tudo rodando liso e sem erro. Suporte nota 10 pelo WhatsApp.", avatar: "RL" },
+  { id: 4, nome: "João P", servico: "Softwares Engenharia", texto: "Instalou o AutoCad e Revit nos computadores da minha empresa, todos funcionando perfeitamente, atendimento espetacular!", avatar: "JO" },
+];
+
 export default function Home() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
   const meusServicos: Servico[] = [
     {
       id: 1,
       titulo: "Desenvolvimento de Sites",
       descricao: "Vitrines virtuais, sites institucionais e e-commerces rápidos e seguros para destacar sua empresa.",
-      icone: <Monitor className="w-8 h-8 md:w-10 md:h-10 text-blue-500" />
+      icone: <Monitor className="w-8 h-8 md:w-10 md:h-10 text-blue-500" />,
+      detalhes: [
+        { titulo: "Sites Institucionais", subtitulo: "Apresentação profissional para empresas e serviços.", icone: <Layout className="w-5 h-5 text-blue-400" /> },
+        { titulo: "E-commerce & Dropshipping", subtitulo: "Lojas virtuais completas para vender online.", icone: <ShoppingCart className="w-5 h-5 text-blue-400" /> },
+        { titulo: "Landing Pages", subtitulo: "Páginas de alta conversão para vendas e leads.", icone: <Globe className="w-5 h-5 text-blue-400" /> }
+      ]
     },
     {
       id: 2,
       titulo: "Formatação e Otimização",
       descricao: "Seu computador rápido de novo. Backup de dados, instalação limpa do sistema e otimização de desempenho.",
-      icone: <Zap className="w-8 h-8 md:w-10 md:h-10 text-yellow-500" />
+      icone: <Zap className="w-8 h-8 md:w-10 md:h-10 text-yellow-500" />,
+      detalhes: [
+        { titulo: "Desempenho Original", subtitulo: "Elimina lentidões e erros causados por arquivos corrompidos.", icone: <Gauge className="w-5 h-5 text-yellow-400" /> },
+        { titulo: "Segurança Total", subtitulo: "Remoção completa de vírus, malwares e adwares.", icone: <ShieldCheck className="w-5 h-5 text-yellow-400" /> },
+        { titulo: "Backup de Dados", subtitulo: "Salvaguarda de fotos e documentos importantes antes do processo.", icone: <Database className="w-5 h-5 text-yellow-400" /> }
+      ]
     },
     {
       id: 3,
@@ -78,49 +115,41 @@ export default function Home() {
       id: 4,
       titulo: "Otimização para Jogos",
       descricao: "Extraia o máximo de seu computador, eleve o nível de gameplay com o menor tempo de resposta possível em sua máquina!",
-      icone: <Rocket className="w-8 h-8 md:w-10 md:h-10 text-red-500" />
+      icone: <Rocket className="w-8 h-8 md:w-10 md:h-10 text-red-500" />,
+      detalhes: [
+        { titulo: "Otimização de OS", subtitulo: "Windows focado 100% em processamento de jogo.", icone: <Cpu className="w-5 h-5 text-red-400" /> },
+        { titulo: "Input Lag Zero", subtitulo: "Ajustes de resposta do mouse e teclado (tempo de reação).", icone: <MousePointer2 className="w-5 h-5 text-red-400" /> },
+        { titulo: "Power & Thermal", subtitulo: "Liberação de energia das peças e controle de temperatura.", icone: <ThermometerSun className="w-5 h-5 text-red-400" /> }
+      ]
     }
   ];
 
   return (
-    <div className="relative min-h-screen flex flex-col bg-zinc-950 text-zinc-50 font-sans selection:bg-blue-500/30 overflow-hidden">
+    <div className="relative min-h-screen flex flex-col bg-zinc-950 text-zinc-50 font-sans selection:bg-blue-500/30 overflow-x-hidden">
       
+      {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
       
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-blue-600/20 blur-[120px] pointer-events-none z-0"></div>
-      <div className="absolute bottom-[20%] right-[-10%] w-[600px] h-[600px] rounded-full bg-purple-600/15 blur-[120px] pointer-events-none z-0"></div>
+      {/* Decorative Blur Blobs */}
+      <div className="absolute top-[-5%] left-[-10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-blue-600/20 blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
+      <div className="absolute bottom-[20%] right-[-10%] w-[400px] md:w-[600px] h-[400px] md:h-[600px] rounded-full bg-purple-600/15 blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
 
       <header className="border-b border-zinc-800/50 bg-zinc-950/70 backdrop-blur-xl sticky top-0 z-50">
-        <div className="max-w-[1440px] mx-auto px-8 flex justify-between items-center relative z-10 h-32 md:h-40">
-          
+        <div className="max-w-[1440px] mx-auto px-4 md:px-8 flex justify-between items-center relative z-10 h-24 md:h-40">
           <div className="flex items-center cursor-pointer">
-            <div className="relative w-40 h-40 md:w-[220px] md:h-[220px] flex-shrink-0 -mr-4 md:-mr-8">
-              <Image 
-                src="/logo-ghost.png" 
-                alt="Logo Ghost Informática"
-                fill
-                className="object-contain"
-                sizes="(max-width: 220px) 100vw, 220px"
-                priority
-              />
+            <div className="relative w-24 h-24 md:w-[220px] md:h-[220px] flex-shrink-0 -mr-2 md:-mr-8">
+              <Image src="/logo-ghost.png" alt="Logo Ghost Informática" fill className="object-contain" sizes="(max-width: 220px) 100vw, 220px" priority />
             </div>
-            
-            <span className="text-3xl md:text-5xl font-black text-white tracking-tighter">
+            <span className="text-xl md:text-5xl font-black text-white tracking-tighter">
               Ghost<span className="text-blue-500">.Informática</span>
             </span>
           </div>
-
-          <div className="flex items-center gap-8 md:gap-12">
+          <div className="flex items-center gap-4 md:gap-12">
             <nav className="hidden lg:flex gap-10 text-zinc-300 font-bold text-lg uppercase tracking-widest">
               <a href="#inicio" className="hover:text-blue-500 transition-colors">Início</a>
               <a href="#servicos" className="hover:text-blue-500 transition-colors">Serviços</a>
             </nav>
-            
-            <a 
-              href="https://wa.me/5545999259633" 
-              target="_blank" 
-              className="bg-blue-600 hover:bg-blue-500 text-white text-lg md:text-xl font-black py-4 px-10 rounded-2xl transition-all shadow-xl shadow-blue-600/20"
-            >
+            <a href="https://wa.me/5545999259633" target="_blank" className="bg-blue-600 hover:bg-blue-500 text-white text-xs md:text-xl font-black py-3 px-5 md:py-4 md:px-10 rounded-xl md:rounded-2xl transition-all shadow-xl shadow-blue-600/20 whitespace-nowrap">
               Fale Comigo
             </a>
           </div>
@@ -128,67 +157,64 @@ export default function Home() {
       </header>
 
       <main className="flex-grow relative z-10">
-        <section id="inicio" className="max-w-5xl mx-auto px-6 py-24 md:py-32 text-center md:text-left flex flex-col items-center md:items-start">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+        <section id="inicio" className="max-w-5xl mx-auto px-6 py-16 md:py-32 text-center md:text-left flex flex-col items-center md:items-start">
+          <h1 className="text-3xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
             Soluções completas em <br className="hidden md:block" />
-            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-              Tecnologia
-            </span> para você
+            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">Tecnologia</span> para você
           </h1>
-          <p className="text-lg text-zinc-400 mb-10 max-w-2xl leading-relaxed">
+          <p className="text-base md:text-lg text-zinc-400 mb-10 max-w-2xl leading-relaxed">
             Do conserto do seu computador até a criação da presença digital do seu negócio. Serviços técnicos especializados e desenvolvimento web moderno.
           </p>
-          <a 
-            href="https://wa.me/5545999259633?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20seus%20serviços." 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="bg-zinc-100 hover:bg-white text-zinc-900 font-bold py-3.5 px-8 rounded-full transition-all hover:scale-105 inline-flex items-center gap-2"
-          >
-            <WhatsAppLogo className="w-5 h-5" />
-            Fazer Orçamento
+          <a href="https://wa.me/5545999259633?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20seus%20serviços." target="_blank" rel="noopener noreferrer" className="bg-zinc-100 hover:bg-white text-zinc-900 font-bold py-3 md:py-4 px-6 md:px-8 rounded-full transition-all hover:scale-105 inline-flex items-center gap-2 text-sm md:text-base">
+            <WhatsAppLogo className="w-5 h-5" /> Fazer Orçamento
           </a>
         </section>
 
-        <section id="servicos" className="max-w-5xl mx-auto px-6 py-16">
+        <section id="servicos" className="max-w-5xl mx-auto px-6 py-12 md:py-16">
           <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-3">Meus Serviços</h2>
-            <p className="text-zinc-400">Como posso ajudar a otimizar sua rotina e seus negócios hoje.</p>
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">Meus Serviços</h2>
+            <p className="text-zinc-400 text-sm md:text-base">Como posso ajudar a otimizar sua rotina e seus negócios hoje.</p>
           </div>
-          
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-6 md:gap-5">
             {meusServicos.map((servico) => (
-              <div 
-                key={servico.id} 
-                className="group bg-zinc-900/40 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300"
-              >
-                <div className="flex flex-col sm:flex-row gap-6 items-start">
-                  <div className="bg-zinc-950/80 p-4 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 transition-colors flex-shrink-0">
+              <div key={servico.id} className="group bg-zinc-900/40 backdrop-blur-sm p-5 md:p-8 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.2)] transition-all duration-300">
+                <div className="flex flex-col sm:flex-row gap-5 md:gap-6 items-start">
+                  <div className="bg-zinc-950/80 p-3 md:p-4 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 transition-colors flex-shrink-0">
                     {servico.icone}
                   </div>
                   <div className="flex-1 w-full">
-                    <h3 className="text-xl font-bold mb-2 text-zinc-100 group-hover:text-blue-400 transition-colors">
-                      {servico.titulo}
-                    </h3>
-                    <p className="text-zinc-400 leading-relaxed text-sm md:text-base">
-                      {servico.descricao}
-                    </p>
+                    <h3 className="text-lg md:text-xl font-bold mb-2 text-zinc-100 group-hover:text-blue-400 transition-colors">{servico.titulo}</h3>
+                    <p className="text-zinc-400 leading-relaxed text-sm md:text-base mb-2">{servico.descricao}</p>
+
+                    {/* Container de Detalhes com correção de bug de visibilidade */}
+                    {servico.detalhes && (
+                      <div className="max-h-0 opacity-0 group-hover:max-h-[600px] group-hover:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-hover:pt-6">
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {servico.detalhes.map((det, idx) => (
+                              <div key={idx} className="flex items-center gap-4 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/50 transition-all duration-300 hover:bg-zinc-900/60">
+                                <div className="flex-shrink-0">{det.icone}</div>
+                                <div>
+                                  <p className="text-sm md:text-base font-bold text-zinc-200">{det.titulo}</p>
+                                  <p className="text-[11px] md:text-xs text-zinc-500 leading-tight">{det.subtitulo}</p>
+                                </div>
+                              </div>
+                            ))}
+                         </div>
+                      </div>
+                    )}
+
+                    {/* Acordeão de Softwares com correção de bug */}
                     {servico.classesSoftwares && (
-                      <div className="overflow-hidden transition-all duration-700 ease-in-out max-h-0 opacity-0 group-hover:max-h-[800px] group-hover:opacity-100 group-hover:mt-6">
-                        <div className="flex flex-col gap-6 border-t border-zinc-800/50 pt-6">
+                      <div className="max-h-0 opacity-0 group-hover:max-h-[1000px] group-hover:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-hover:pt-6">
+                        <div className="flex flex-col gap-8">
                           {servico.classesSoftwares.map((classe, idxClasse) => (
                             <div key={idxClasse}>
-                              <p className="text-sm font-semibold text-zinc-300 mb-3 tracking-wide">{classe.classe}</p>
-                              <div className="flex flex-wrap gap-3">
+                              <p className="text-xs md:text-sm font-semibold text-zinc-400 mb-4 tracking-widest uppercase">{classe.classe}</p>
+                              <div className="flex flex-wrap gap-3 md:gap-4">
                                 {classe.softwares.map((prog, index) => (
-                                  <div 
-                                    key={index} 
-                                    className={`flex items-center gap-2 bg-zinc-950/80 px-3 py-1.5 rounded-lg border border-zinc-800 shadow-sm transition-all duration-500 transform scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100`}
-                                    style={{ transitionDelay: `${(idxClasse * 150) + (index * 75) + 300}ms` }}
-                                  >
-                                    <div className={`w-7 h-7 rounded border flex items-center justify-center text-[11px] font-extrabold flex-shrink-0 ${prog.cor}`}>
-                                      {prog.sigla}
-                                    </div>
-                                    <span className="text-sm text-zinc-300 font-medium">{prog.nome}</span>
+                                  <div key={index} className="flex items-center gap-3 bg-zinc-950/80 px-4 py-2 rounded-xl border border-zinc-800 transition-all duration-300 hover:border-zinc-700">
+                                    <div className={`w-8 h-8 rounded-lg border flex items-center justify-center text-[12px] font-black flex-shrink-0 ${prog.cor}`}>{prog.sigla}</div>
+                                    <span className="text-xs md:text-sm text-zinc-300 font-bold">{prog.nome}</span>
                                   </div>
                                 ))}
                               </div>
@@ -203,26 +229,55 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        <section id="depoimentos" className="max-w-5xl mx-auto px-6 py-16 md:py-24">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-6 text-center md:text-left">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold mb-3">O que dizem os clientes</h2>
+              <p className="text-zinc-400 text-sm md:text-base">A confiança de quem já passou pela Ghost.informática.</p>
+            </div>
+            <div className="flex gap-4">
+              <button onClick={() => scroll('left')} className="p-3 md:p-4 rounded-full border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:border-blue-500/50 transition-all">
+                <ChevronLeft className="w-6 h-6 text-zinc-400" />
+              </button>
+              <button onClick={() => scroll('right')} className="p-3 md:p-4 rounded-full border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:border-blue-500/50 transition-all">
+                <ChevronRight className="w-6 h-6 text-zinc-400" />
+              </button>
+            </div>
+          </div>
+          <div ref={scrollRef} className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {depoimentos.map((item) => (
+              <div key={item.id} className="min-w-[280px] md:min-w-[420px] snap-center relative group bg-zinc-900/40 backdrop-blur-sm p-6 md:p-10 rounded-3xl border border-zinc-800/80 hover:border-purple-500/50 hover:-translate-y-2 transition-all duration-500">
+                <Quote className="absolute top-4 right-4 w-10 h-10 text-zinc-800/20 group-hover:text-purple-500/10 transition-colors" />
+                <div className="flex items-center gap-5 mb-8">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center font-black text-lg text-white border-2 border-white/10 flex-shrink-0">{item.avatar}</div>
+                  <div>
+                    <h4 className="font-bold text-zinc-100 text-base md:text-lg">{item.nome}</h4>
+                    <div className="flex gap-1">
+                      {[...Array(5)].map((_, i) => (<Star key={i} className="w-3 md:w-4 h-3 md:h-4 fill-yellow-500 text-yellow-500" />))}
+                    </div>
+                  </div>
+                </div>
+                <p className="text-zinc-400 italic text-sm md:text-base leading-relaxed mb-8 h-24 overflow-hidden">"{item.texto}"</p>
+                <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-black px-4 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-blue-500">{item.servico}</span>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
 
-      <footer className="border-t border-zinc-800/50 bg-zinc-950/80 backdrop-blur-md py-10 mt-12 relative z-10">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
-          <div className="flex flex-col gap-4">
-            <p className="text-zinc-500 text-sm">
-              © 2026 Ghost Informática. Todos os direitos reservados.
-            </p>
+      <footer className="border-t border-zinc-800/50 bg-zinc-950/80 backdrop-blur-md py-8 md:py-10 mt-12 relative z-10">
+        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center md:text-left">
+          <div className="flex flex-col gap-3">
+            <p className="text-zinc-500 text-xs md:text-sm">© 2026 Ghost Informática. Todos os direitos reservados.</p>
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-              <a href="https://www.instagram.com/ghost.informatica" target="_blank" className="flex items-center gap-2 text-zinc-400 hover:text-pink-500 transition-colors text-sm font-medium">
-                <InstagramLogo className="w-5 h-5" /> @ghost.informática
-              </a>
-              <span className="hidden sm:block text-zinc-700">•</span>
-              <a href="https://wa.me/5545999259633" target="_blank" className="flex items-center gap-2 text-zinc-400 hover:text-emerald-500 transition-colors text-sm font-medium">
-                <WhatsAppLogo className="w-5 h-5" /> (45) 99925-9633
+              <a href="https://www.instagram.com/ghost.informatica" target="_blank" className="flex items-center gap-3 text-zinc-400 hover:text-pink-500 transition-colors text-sm font-bold tracking-widest uppercase">
+                <InstagramLogo className="w-6 h-6" /> @ghost.informática
               </a>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-zinc-400 text-sm bg-zinc-900/80 py-2 px-4 rounded-full border border-zinc-800/50">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <div className="flex items-center gap-3 text-zinc-400 text-xs md:text-sm bg-zinc-900/80 py-2.5 px-6 rounded-full border border-zinc-800/50 shadow-inner">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
             Atendimento presencial e remoto!
           </div>
         </div>
