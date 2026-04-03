@@ -35,7 +35,7 @@ interface Servico {
 }
 
 const depoimentos = [
-  { id: 1, nome: "Leonardo", servico: "Otimização Gamer", texto: "Tava com um lag absurdo no CS. O cara mexeu em tudo, otimizou o Windows e agora o FPS cravou no talo. Recomendo demais!", avatar: "T" },
+  { id: 1, nome: "Thiago 'Tico'", servico: "Otimização Gamer", texto: "Tava com um lag absurdo no CS. O cara mexeu em tudo, otimizou o Windows e agora o FPS cravou no talo. Recomendo demais!", avatar: "T" },
   { id: 2, nome: "Carla Vasconcelos", servico: "Formatação + Backup", texto: "Meu notebook parou do nada. Fiquei desesperada pelos arquivos, mas ele recuperou tudo e o PC tá ligando em segundos.", avatar: "CV" },
   { id: 3, nome: "Eng. Ricardo Lima", servico: "Softwares Engenharia", texto: "Instalou o pack completo do AutoCAD e SketchUp. Tudo rodando liso e sem erro. Suporte nota 10 pelo WhatsApp.", avatar: "RL" },
   { id: 4, nome: "João P", servico: "Softwares Engenharia", texto: "Instalou o AutoCad e Revit nos computadores da minha empresa, todos funcionando perfeitamente, atendimento espetacular!", avatar: "JO" },
@@ -126,11 +126,9 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-zinc-950 text-zinc-50 font-sans selection:bg-blue-500/30 overflow-x-hidden">
-      
-      {/* Background Grid */}
+
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
-      
-      {/* Decorative Blur Blobs */}
+
       <div className="absolute top-[-5%] left-[-10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-blue-600/20 blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
       <div className="absolute bottom-[20%] right-[-10%] w-[400px] md:w-[600px] h-[400px] md:h-[600px] rounded-full bg-purple-600/15 blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
 
@@ -177,18 +175,21 @@ export default function Home() {
           </div>
           <div className="flex flex-col gap-6 md:gap-5">
             {meusServicos.map((servico) => (
-              <div key={servico.id} className="group bg-zinc-900/40 backdrop-blur-sm p-5 md:p-8 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.2)] transition-all duration-300">
+              <div 
+                key={servico.id} 
+                tabIndex={0}
+                className="group outline-none bg-zinc-900/40 backdrop-blur-sm p-5 md:p-8 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 focus:border-blue-500/50 hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.2)] focus:shadow-[0_0_25px_-5px_rgba(59,130,246,0.2)] transition-all duration-300"
+              >
                 <div className="flex flex-col sm:flex-row gap-5 md:gap-6 items-start">
-                  <div className="bg-zinc-950/80 p-3 md:p-4 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 transition-colors flex-shrink-0">
+                  <div className="bg-zinc-950/80 p-3 md:p-4 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 group-focus:border-blue-500/30 transition-colors flex-shrink-0">
                     {servico.icone}
                   </div>
                   <div className="flex-1 w-full">
-                    <h3 className="text-lg md:text-xl font-bold mb-2 text-zinc-100 group-hover:text-blue-400 transition-colors">{servico.titulo}</h3>
+                    <h3 className="text-lg md:text-xl font-bold mb-2 text-zinc-100 group-hover:text-blue-400 group-focus:text-blue-400 transition-colors">{servico.titulo}</h3>
                     <p className="text-zinc-400 leading-relaxed text-sm md:text-base mb-2">{servico.descricao}</p>
 
-                    {/* Container de Detalhes com correção de bug de visibilidade */}
                     {servico.detalhes && (
-                      <div className="max-h-0 opacity-0 group-hover:max-h-[600px] group-hover:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-hover:pt-6">
+                      <div className="max-h-0 opacity-0 group-hover:max-h-[600px] group-focus:max-h-[600px] group-hover:opacity-100 group-focus:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 group-focus:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-focus:border-zinc-800/50 group-hover:pt-6 group-focus:pt-6">
                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {servico.detalhes.map((det, idx) => (
                               <div key={idx} className="flex items-center gap-4 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/50 transition-all duration-300 hover:bg-zinc-900/60">
@@ -203,9 +204,8 @@ export default function Home() {
                       </div>
                     )}
 
-                    {/* Acordeão de Softwares com correção de bug */}
                     {servico.classesSoftwares && (
-                      <div className="max-h-0 opacity-0 group-hover:max-h-[1000px] group-hover:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-hover:pt-6">
+                      <div className="max-h-0 opacity-0 group-hover:max-h-[1000px] group-focus:max-h-[1000px] group-hover:opacity-100 group-focus:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 group-focus:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-focus:border-zinc-800/50 group-hover:pt-6 group-focus:pt-6">
                         <div className="flex flex-col gap-8">
                           {servico.classesSoftwares.map((classe, idxClasse) => (
                             <div key={idxClasse}>
