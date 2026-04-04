@@ -1,8 +1,11 @@
 'use client';
 
-import { Monitor, Zap, Package, Rocket, Star, Quote, ChevronLeft, ChevronRight, Layout, ShoppingCart, Globe, Gauge, ShieldCheck, Database, Cpu, MousePointer2, ThermometerSun } from 'lucide-react';
+import { Monitor, Zap, Package, Rocket, Star, Quote, Layout, ShoppingCart, Globe, Gauge, ShieldCheck, Database, Cpu, MousePointer2, ThermometerSun } from 'lucide-react';
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { Canvas, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
 const InstagramLogo = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -15,6 +18,41 @@ const WhatsAppLogo = ({ className }: { className?: string }) => (
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
   </svg>
 );
+
+function Cube({ position, rotation, speed, size }: any) {
+  const meshRef = useRef<THREE.Mesh>(null!);
+  useFrame((state) => {
+    meshRef.current.rotation.x += speed;
+    meshRef.current.rotation.y += speed;
+    meshRef.current.position.y += Math.sin(state.clock.getElapsedTime() + position[0]) * 0.005;
+  });
+  return (
+    <mesh ref={meshRef} position={position as any} rotation={rotation as any}>
+      <boxGeometry args={[size, size, size]} />
+      <meshStandardMaterial color="#3b82f6" wireframe opacity={0.4} transparent />
+    </mesh>
+  );
+}
+
+function CubesBackground() {
+  const cubes = useMemo(() => {
+
+    return Array.from({ length: 150 }).map(() => ({
+
+      position: [(Math.random() - 0.5) * 60, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 10],
+      rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0],
+      speed: Math.random() * 0.008 + 0.002,
+      size: Math.random() * 0.5 + 0.2
+    }));
+  }, []);
+  return (
+    <>
+      <ambientLight intensity={1.6} />
+      <pointLight position={[10, 10, 10]} intensity={3.0} color="#60a5fa" />
+      {cubes.map((cube, i) => <Cube key={i} {...cube} />)}
+    </>
+  );
+}
 
 interface ItemDetalhe {
   titulo: string;
@@ -39,18 +77,15 @@ const depoimentos = [
   { id: 2, nome: "Carla Vasconcelos", servico: "Formatação + Backup", texto: "Meu notebook parou do nada. Fiquei desesperada pelos arquivos, mas ele recuperou tudo e o PC tá ligando em segundos.", avatar: "CV" },
   { id: 3, nome: "Eng. Ricardo Lima", servico: "Softwares Engenharia", texto: "Instalou o pack completo do AutoCAD e SketchUp. Tudo rodando liso e sem erro. Suporte nota 10 pelo WhatsApp.", avatar: "RL" },
   { id: 4, nome: "João P", servico: "Softwares Engenharia", texto: "Instalou o AutoCad e Revit nos computadores da minha empresa, todos funcionando perfeitamente, atendimento espetacular!", avatar: "JO" },
+  { id: 5, nome: "Paula Mendes", servico: "Hospedagem & Migração", texto: "Meu site antigo estava lento e vivia caindo. Eles migraram tudo para um servidor robusto e otimizado.", avatar: "PM" },
+  { id: 6, nome: "Dra. Beatriz Santos", servico: "Suporte Remoto", texto: "Precisava instalar o certificado digital e o pack office urgente. Ele resolveu tudo remotamente em 15min.", avatar: "BS" },
+  { id: 7, nome: "Felipe Almeida", servico: "Montagem de PC", texto: "Montou meu setup com um cable management impecável. Ficou lindo demais e funcionando certinho!.", avatar: "FA" },
+  { id: 8, nome: "Sandra Helena", servico: "Recuperação de Dados", texto: "Pensei que tinha perdido as fotos da família no HD antigo. Ele conseguiu recuperar tudo!", avatar: "SH" },
 ];
 
 export default function Home() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
-      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
-  };
+  const totalDepoimentos = depoimentos.length;
+  const radius = Math.max(260, totalDepoimentos * 55);
 
   const meusServicos: Servico[] = [
     {
@@ -126,12 +161,8 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen flex flex-col bg-zinc-950 text-zinc-50 font-sans selection:bg-blue-500/30 overflow-x-hidden">
-
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
-
-      <div className="absolute top-[-5%] left-[-10%] w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-blue-600/20 blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
-      <div className="absolute bottom-[20%] right-[-10%] w-[400px] md:w-[600px] h-[400px] md:h-[600px] rounded-full bg-purple-600/15 blur-[80px] md:blur-[120px] pointer-events-none z-0"></div>
-
+      
       <header className="border-b border-zinc-800/50 bg-zinc-950/70 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-[1440px] mx-auto px-4 md:px-8 flex justify-between items-center relative z-10 h-24 md:h-40">
           <div className="flex items-center cursor-pointer">
@@ -155,44 +186,44 @@ export default function Home() {
       </header>
 
       <main className="flex-grow relative z-10">
-        <section id="inicio" className="max-w-5xl mx-auto px-6 py-16 md:py-32 text-center md:text-left flex flex-col items-center md:items-start">
-          <h1 className="text-3xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+        <section id="inicio" className="max-w-[1440px] mx-auto px-6 py-16 md:py-32 text-center md:text-left flex flex-col items-center md:items-start relative z-10">
+          <h1 className="text-3xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight max-w-4xl relative z-10">
             Soluções completas em <br className="hidden md:block" />
             <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">Tecnologia</span> para você
           </h1>
-          <p className="text-base md:text-lg text-zinc-400 mb-10 max-w-2xl leading-relaxed">
+          <p className="text-base md:text-xl text-zinc-400 mb-10 max-w-3xl leading-relaxed relative z-10">
             Do conserto do seu computador até a criação da presença digital do seu negócio. Serviços técnicos especializados e desenvolvimento web moderno.
           </p>
-          <a href="https://wa.me/5545999259633?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20seus%20serviços." target="_blank" rel="noopener noreferrer" className="bg-zinc-100 hover:bg-white text-zinc-900 font-bold py-3 md:py-4 px-6 md:px-8 rounded-full transition-all hover:scale-105 inline-flex items-center gap-2 text-sm md:text-base">
+          <a href="https://wa.me/5545999259633" target="_blank" rel="noopener noreferrer" className="bg-zinc-100 hover:bg-white text-zinc-900 font-bold py-3 md:py-4 px-6 md:px-8 rounded-full transition-all hover:scale-105 inline-flex items-center gap-2 text-sm md:text-base relative z-10">
             <WhatsAppLogo className="w-5 h-5" /> Fazer Orçamento
           </a>
         </section>
 
-        <section id="servicos" className="max-w-5xl mx-auto px-6 py-12 md:py-16">
-          <div className="mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-3">Meus Serviços</h2>
-            <p className="text-zinc-400 text-sm md:text-base">Como posso ajudar a otimizar sua rotina e seus negócios hoje.</p>
+        <section id="servicos" className="max-w-[1440px] mx-auto px-6 py-12 md:py-16 relative z-10">
+          <div className="mb-12 text-center md:text-left">
+            <h2 className="text-2xl md:text-4xl font-bold mb-3">Meus Serviços</h2>
+            <p className="text-zinc-400 text-sm md:text-lg">Como posso ajudar a otimizar sua rotina hoje.</p>
           </div>
           <div className="flex flex-col gap-6 md:gap-5">
             {meusServicos.map((servico) => (
               <div 
                 key={servico.id} 
                 tabIndex={0}
-                className="group outline-none bg-zinc-900/40 backdrop-blur-sm p-5 md:p-8 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 focus:border-blue-500/50 hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.2)] focus:shadow-[0_0_25px_-5px_rgba(59,130,246,0.2)] transition-all duration-300"
+                className="group outline-none bg-zinc-900/40 backdrop-blur-sm p-5 md:p-8 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 focus:border-blue-500/50 hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.2)] transition-all duration-300"
               >
-                <div className="flex flex-col sm:flex-row gap-5 md:gap-6 items-start">
-                  <div className="bg-zinc-950/80 p-3 md:p-4 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 group-focus:border-blue-500/30 transition-colors flex-shrink-0">
+                <div className="flex flex-col sm:flex-row gap-5 md:gap-8 items-start relative z-10">
+                  <div className="bg-zinc-950/80 p-3 md:p-6 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 transition-colors flex-shrink-0">
                     {servico.icone}
                   </div>
-                  <div className="flex-1 w-full">
-                    <h3 className="text-lg md:text-xl font-bold mb-2 text-zinc-100 group-hover:text-blue-400 group-focus:text-blue-400 transition-colors">{servico.titulo}</h3>
-                    <p className="text-zinc-400 leading-relaxed text-sm md:text-base mb-2">{servico.descricao}</p>
-
+                  <div className="flex-1 w-full text-left">
+                    <h3 className="text-lg md:text-xl font-bold mb-2 text-zinc-100 group-hover:text-blue-400 transition-colors">{servico.titulo}</h3>
+                    <p className="text-zinc-100 text-sm md:text-lg leading-relaxed">{servico.descricao}</p>
+                    
                     {servico.detalhes && (
-                      <div className="max-h-0 opacity-0 group-hover:max-h-[600px] group-focus:max-h-[600px] group-hover:opacity-100 group-focus:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 group-focus:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-focus:border-zinc-800/50 group-hover:pt-6 group-focus:pt-6">
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="max-h-0 opacity-0 group-hover:max-h-[600px] group-focus:max-h-[600px] group-hover:opacity-100 group-focus:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 group-focus:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-hover:pt-6">
+                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {servico.detalhes.map((det, idx) => (
-                              <div key={idx} className="flex items-center gap-4 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/50 transition-all duration-300 hover:bg-zinc-900/60">
+                              <div key={idx} className="flex items-center gap-4 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/50 hover:bg-zinc-900/60 transition-colors">
                                 <div className="flex-shrink-0">{det.icone}</div>
                                 <div>
                                   <p className="text-sm md:text-base font-bold text-zinc-200">{det.titulo}</p>
@@ -205,7 +236,7 @@ export default function Home() {
                     )}
 
                     {servico.classesSoftwares && (
-                      <div className="max-h-0 opacity-0 group-hover:max-h-[1000px] group-focus:max-h-[1000px] group-hover:opacity-100 group-focus:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 group-focus:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-focus:border-zinc-800/50 group-hover:pt-6 group-focus:pt-6">
+                      <div className="max-h-0 opacity-0 group-hover:max-h-[1000px] group-focus:max-h-[1000px] group-hover:opacity-100 group-focus:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 group-focus:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-hover:pt-6">
                         <div className="flex flex-col gap-8">
                           {servico.classesSoftwares.map((classe, idxClasse) => (
                             <div key={idxClasse}>
@@ -230,44 +261,64 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="depoimentos" className="max-w-5xl mx-auto px-6 py-16 md:py-24">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-12 gap-6 text-center md:text-left">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold mb-3">O que dizem os clientes</h2>
-              <p className="text-zinc-400 text-sm md:text-base">A confiança de quem já passou pela Ghost.informática.</p>
-            </div>
-            <div className="flex gap-4">
-              <button onClick={() => scroll('left')} className="p-3 md:p-4 rounded-full border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:border-blue-500/50 transition-all">
-                <ChevronLeft className="w-6 h-6 text-zinc-400" />
-              </button>
-              <button onClick={() => scroll('right')} className="p-3 md:p-4 rounded-full border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:border-blue-500/50 transition-all">
-                <ChevronRight className="w-6 h-6 text-zinc-400" />
-              </button>
-            </div>
+        <section id="depoimentos" className="relative max-w-full overflow-hidden py-16 md:py-48 bg-zinc-950">
+          <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
+
+            <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 2]} style={{ width: '100%', height: '100%' }}>
+              <CubesBackground />
+            </Canvas>
           </div>
-          <div ref={scrollRef} className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {depoimentos.map((item) => (
-              <div key={item.id} className="min-w-[280px] md:min-w-[420px] snap-center relative group bg-zinc-900/40 backdrop-blur-sm p-6 md:p-10 rounded-3xl border border-zinc-800/80 hover:border-purple-500/50 hover:-translate-y-2 transition-all duration-500">
-                <Quote className="absolute top-4 right-4 w-10 h-10 text-zinc-800/20 group-hover:text-purple-500/10 transition-colors" />
-                <div className="flex items-center gap-5 mb-8">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center font-black text-lg text-white border-2 border-white/10 flex-shrink-0">{item.avatar}</div>
-                  <div>
-                    <h4 className="font-bold text-zinc-100 text-base md:text-lg">{item.nome}</h4>
-                    <div className="flex gap-1">
-                      {[...Array(5)].map((_, i) => (<Star key={i} className="w-3 md:w-4 h-3 md:h-4 fill-yellow-500 text-yellow-500" />))}
+          <div className="max-w-[1440px] mx-auto px-6 mb-32 text-center md:text-left relative z-20">
+            <h2 className="text-3xl md:text-6xl font-black mb-4 tracking-tighter">
+              Feedbacks <span className="text-blue-500">Reais</span>
+            </h2>
+            <p className="text-zinc-400 text-base md:text-xl">A confiança de quem já passou pela Ghost.informática.</p>
+          </div>
+          <div className="relative h-[450px] md:h-[550px] w-full flex items-center justify-center [perspective:1200px] overflow-visible">
+            <motion.div
+              className="relative w-[180px] md:w-[240px] h-[220px] md:h-[280px] [transform-style:preserve-3d]"
+              animate={{ rotateY: 360 }}
+              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+            >
+              {depoimentos.map((item, index) => {
+                const angle = index * (360 / totalDepoimentos);
+                return (
+                  <motion.div
+                    key={item.id}
+                    className="absolute inset-0"
+                    style={{ transform: `rotateY(${angle}deg) translateZ(${radius}px)` }}
+                  >
+                    <div className="h-full w-full bg-black p-4 md:p-6 rounded-2xl border border-blue-500/40 shadow-[0_0_40px_-10px_rgba(59,130,246,0.4)] flex flex-col [backface-visibility:visible] overflow-hidden">
+                      <Quote className="text-blue-500/20 w-6 h-6 md:w-8 md:h-8 absolute top-3 right-3" />
+                      <div className="relative z-10 flex flex-col h-full text-left">
+                        <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-5">
+                          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center font-black text-white border border-white/10 flex-shrink-0 text-xs md:text-sm">{item.avatar}</div>
+                          <div className="min-w-0">
+                            <h4 className="font-bold text-white text-[11px] md:text-sm leading-tight truncate">{item.nome}</h4>
+                            <div className="flex gap-0.5">
+                              {[...Array(5)].map((_, i) => (<Star key={i} className="w-2 md:w-2.5 h-2 md:h-2.5 fill-yellow-500 text-yellow-500" />))}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex-grow overflow-hidden mb-2 md:mb-3 p-1">
+                          <p className="text-white italic text-[10px] md:text-sm leading-relaxed relative z-10 line-clamp-6">"{item.texto}"</p>
+                        </div>
+                        <div className="mt-2 relative z-10 pt-2 border-t border-zinc-800/50 flex-shrink-0">
+                          <span className="text-[7px] md:text-[8px] uppercase tracking-widest font-black px-1.5 py-0.5 bg-blue-900/30 border border-blue-500/30 rounded text-blue-400 inline-block truncate max-w-full">{item.servico}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <p className="text-zinc-400 italic text-sm md:text-base leading-relaxed mb-8 h-24 overflow-hidden">"{item.texto}"</p>
-                <span className="text-[10px] md:text-xs uppercase tracking-[0.2em] font-black px-4 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-blue-500">{item.servico}</span>
-              </div>
-            ))}
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-32 md:h-32 bg-blue-600/20 blur-[50px] md:blur-[100px] rounded-full pointer-events-none"></div>
           </div>
         </section>
       </main>
 
       <footer className="border-t border-zinc-800/50 bg-zinc-950/80 backdrop-blur-md py-8 md:py-10 mt-12 relative z-10">
-        <div className="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center md:text-left">
+        <div className="max-w-[1440px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4 text-center md:text-left">
           <div className="flex flex-col gap-3">
             <p className="text-zinc-500 text-xs md:text-sm">© 2026 Ghost Informática. Todos os direitos reservados.</p>
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
