@@ -1,8 +1,8 @@
 'use client';
 
-import { Monitor, Zap, Package, Rocket, Star, Quote, Layout, ShoppingCart, Globe, Gauge, ShieldCheck, Database, Cpu, MousePointer2, ThermometerSun } from 'lucide-react';
+import { Monitor, Zap, Package, Rocket, Star, Quote, Layout, ShoppingCart, Globe, Gauge, ShieldCheck, Database, Cpu, MousePointer2, ThermometerSun, Send, User, Mail, Phone, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -29,16 +29,14 @@ function Cube({ position, rotation, speed, size }: any) {
   return (
     <mesh ref={meshRef} position={position as any} rotation={rotation as any}>
       <boxGeometry args={[size, size, size]} />
-      <meshStandardMaterial color="#3b82f6" wireframe opacity={0.4} transparent />
+      <meshStandardMaterial color="#3b82f6" wireframe opacity={0.5} transparent />
     </mesh>
   );
 }
 
 function CubesBackground() {
   const cubes = useMemo(() => {
-
     return Array.from({ length: 150 }).map(() => ({
-
       position: [(Math.random() - 0.5) * 60, (Math.random() - 0.5) * 20, (Math.random() - 0.5) * 10],
       rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0],
       speed: Math.random() * 0.008 + 0.002,
@@ -51,6 +49,92 @@ function CubesBackground() {
       <pointLight position={[10, 10, 10]} intensity={3.0} color="#60a5fa" />
       {cubes.map((cube, i) => <Cube key={i} {...cube} />)}
     </>
+  );
+}
+
+function FormularioOrcamento() {
+  const [result, setResult] = useState("");
+
+  const onSubmit = async (event: any) => {
+    event.preventDefault();
+    setResult("Enviando...");
+    const formData = new FormData(event.target);
+
+    formData.append("access_key", "ed4a2491-947f-4668-b6cd-7414045359a0");
+
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setResult("Orçamento solicitado com sucesso! Entraremos em contato em breve.");
+      event.target.reset();
+    } else {
+      setResult("Ocorreu um erro ao enviar. Tente novamente.");
+    }
+  };
+
+  return (
+    <section className="max-w-4xl mx-auto px-6 py-20 relative z-30">
+      <motion.div 
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="bg-zinc-900/50 backdrop-blur-2xl border border-blue-500/30 rounded-3xl overflow-hidden shadow-[0_0_50px_-15px_rgba(59,130,246,0.3)]"
+      >
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 py-4 px-8">
+          <h3 className="text-xl md:text-2xl font-black text-white text-center tracking-tighter">
+            Solicite seu orçamento sem compromisso!
+          </h3>
+        </div>
+
+        <form onSubmit={onSubmit} className="p-8 md:p-12 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-zinc-400 flex items-center gap-2">
+                <User className="w-4 h-4 text-blue-500" /> Nome ou Empresa
+              </label>
+              <input type="text" name="name" required placeholder="Seu nome ou da empresa"
+                className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:border-blue-500 outline-none transition-all" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-zinc-400 flex items-center gap-2">
+                <Mail className="w-4 h-4 text-blue-500" /> E-mail para contato
+              </label>
+              <input type="email" name="email" required placeholder="seu@email.com"
+                className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:border-blue-500 outline-none transition-all" />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-zinc-400 flex items-center gap-2">
+              <Phone className="w-4 h-4 text-blue-500" /> Telefone / WhatsApp
+            </label>
+            <input type="tel" name="phone" required placeholder="(45) 99999-9999"
+              className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:border-blue-500 outline-none transition-all" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-zinc-400 flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-blue-500" /> Descrição do serviço
+            </label>
+            <textarea name="message" required rows={4} placeholder="Como podemos ajudar sua empresa hoje?"
+              className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl py-3 px-4 text-white focus:border-blue-500 outline-none transition-all resize-none"></textarea>
+          </div>
+
+          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-600/20 active:scale-[0.98]">
+            ENVIAR SOLICITAÇÃO <Send className="w-5 h-5" />
+          </button>
+
+          {result && <p className="text-center text-sm font-bold text-blue-400 animate-pulse">{result}</p>}
+        </form>
+      </motion.div>
+    </section>
   );
 }
 
@@ -77,9 +161,9 @@ const depoimentos = [
   { id: 2, nome: "Carla Vasconcelos", servico: "Formatação + Backup", texto: "Meu notebook parou do nada. Fiquei desesperada pelos arquivos, mas ele recuperou tudo e o PC tá ligando em segundos.", avatar: "CV" },
   { id: 3, nome: "Eng. Ricardo Lima", servico: "Softwares Engenharia", texto: "Instalou o pack completo do AutoCAD e SketchUp. Tudo rodando liso e sem erro. Suporte nota 10 pelo WhatsApp.", avatar: "RL" },
   { id: 4, nome: "João P", servico: "Softwares Engenharia", texto: "Instalou o AutoCad e Revit nos computadores da minha empresa, todos funcionando perfeitamente, atendimento espetacular!", avatar: "JO" },
-  { id: 5, nome: "Paula Mendes", servico: "Hospedagem & Migração", texto: "Meu site antigo estava lento e vivia caindo. Eles migraram tudo para um servidor robusto e otimizado.", avatar: "PM" },
-  { id: 6, nome: "Dra. Beatriz Santos", servico: "Suporte Remoto", texto: "Precisava instalar o certificado digital e o pack office urgente. Ele resolveu tudo remotamente em 15min.", avatar: "BS" },
-  { id: 7, nome: "Felipe Almeida", servico: "Montagem de PC", texto: "Montou meu setup com um cable management impecável. Ficou lindo demais e funcionando certinho!.", avatar: "FA" },
+  { id: 5, nome: "Paula Mendes", servico: "Hospedagem & Migração", texto: "Meu site antigo estava lento e vivia caindo. Eles migraram tudo para um servidor melhor e otimizado.", avatar: "PM" },
+  { id: 6, nome: "Dra. Beatriz Santos", servico: "Suporte Remoto", texto: "Precisava instalar o certificado digital e o pacote office urgente. Ele resolveu tudo remotamente em 15min.", avatar: "BS" },
+  { id: 7, nome: "Felipe Almeida", servico: "Montagem de PC", texto: "Montou meu setup com um cable management impecável. Ficou lindo demais!.", avatar: "FA" },
   { id: 8, nome: "Sandra Helena", servico: "Recuperação de Dados", texto: "Pensei que tinha perdido as fotos da família no HD antigo. Ele conseguiu recuperar tudo!", avatar: "SH" },
 ];
 
@@ -186,12 +270,12 @@ export default function Home() {
       </header>
 
       <main className="flex-grow relative z-10">
-        <section id="inicio" className="max-w-[1440px] mx-auto px-6 py-16 md:py-32 text-center md:text-left flex flex-col items-center md:items-start relative z-10">
-          <h1 className="text-3xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight max-w-4xl relative z-10">
+        <section id="inicio" className="max-w-5xl mx-auto px-6 py-16 md:py-32 text-center md:text-left flex flex-col items-center md:items-start relative z-10">
+          <h1 className="text-3xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-tight max-w-4xl">
             Soluções completas em <br className="hidden md:block" />
             <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">Tecnologia</span> para você
           </h1>
-          <p className="text-base md:text-xl text-zinc-400 mb-10 max-w-3xl leading-relaxed relative z-10">
+          <p className="text-base md:text-lg text-zinc-400 mb-10 max-w-2xl leading-relaxed">
             Do conserto do seu computador até a criação da presença digital do seu negócio. Serviços técnicos especializados e desenvolvimento web moderno.
           </p>
           <a href="https://wa.me/5545999259633" target="_blank" rel="noopener noreferrer" className="bg-zinc-100 hover:bg-white text-zinc-900 font-bold py-3 md:py-4 px-6 md:px-8 rounded-full transition-all hover:scale-105 inline-flex items-center gap-2 text-sm md:text-base relative z-10">
@@ -199,10 +283,10 @@ export default function Home() {
           </a>
         </section>
 
-        <section id="servicos" className="max-w-[1440px] mx-auto px-6 py-12 md:py-16 relative z-10">
-          <div className="mb-12 text-center md:text-left">
-            <h2 className="text-2xl md:text-4xl font-bold mb-3">Meus Serviços</h2>
-            <p className="text-zinc-400 text-sm md:text-lg">Como posso ajudar a otimizar sua rotina hoje.</p>
+        <section id="servicos" className="max-w-5xl mx-auto px-6 py-12 md:py-16 relative z-10">
+          <div className="mb-12 text-center md:text-left relative z-10">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3">Meus Serviços</h2>
+            <p className="text-zinc-400 text-sm md:text-base">Como posso ajudar a otimizar sua rotina hoje.</p>
           </div>
           <div className="flex flex-col gap-6 md:gap-5">
             {meusServicos.map((servico) => (
@@ -211,17 +295,16 @@ export default function Home() {
                 tabIndex={0}
                 className="group outline-none bg-zinc-900/40 backdrop-blur-sm p-5 md:p-8 rounded-2xl border border-zinc-800/80 hover:border-blue-500/50 focus:border-blue-500/50 hover:shadow-[0_0_25px_-5px_rgba(59,130,246,0.2)] transition-all duration-300"
               >
-                <div className="flex flex-col sm:flex-row gap-5 md:gap-8 items-start relative z-10">
-                  <div className="bg-zinc-950/80 p-3 md:p-6 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 transition-colors flex-shrink-0">
+                <div className="flex flex-col sm:flex-row gap-5 md:gap-6 items-start relative z-10">
+                  <div className="bg-zinc-950/80 p-3 md:p-4 rounded-xl border border-zinc-800 group-hover:border-blue-500/30 transition-colors flex-shrink-0">
                     {servico.icone}
                   </div>
                   <div className="flex-1 w-full text-left">
                     <h3 className="text-lg md:text-xl font-bold mb-2 text-zinc-100 group-hover:text-blue-400 transition-colors">{servico.titulo}</h3>
-                    <p className="text-zinc-100 text-sm md:text-lg leading-relaxed">{servico.descricao}</p>
-                    
+                    <p className="text-zinc-400 leading-relaxed text-sm md:text-base mb-2">{servico.descricao}</p>
                     {servico.detalhes && (
                       <div className="max-h-0 opacity-0 group-hover:max-h-[600px] group-focus:max-h-[600px] group-hover:opacity-100 group-focus:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 group-focus:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-hover:pt-6">
-                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {servico.detalhes.map((det, idx) => (
                               <div key={idx} className="flex items-center gap-4 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/50 hover:bg-zinc-900/60 transition-colors">
                                 <div className="flex-shrink-0">{det.icone}</div>
@@ -234,7 +317,6 @@ export default function Home() {
                          </div>
                       </div>
                     )}
-
                     {servico.classesSoftwares && (
                       <div className="max-h-0 opacity-0 group-hover:max-h-[1000px] group-focus:max-h-[1000px] group-hover:opacity-100 group-focus:opacity-100 overflow-hidden transition-all duration-500 ease-in-out group-hover:mt-6 group-focus:mt-6 border-t border-transparent group-hover:border-zinc-800/50 group-hover:pt-6">
                         <div className="flex flex-col gap-8">
@@ -263,7 +345,6 @@ export default function Home() {
 
         <section id="depoimentos" className="relative max-w-full overflow-hidden py-16 md:py-48 bg-zinc-950">
           <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
-
             <Canvas camera={{ position: [0, 0, 8], fov: 60 }} dpr={[1, 2]} style={{ width: '100%', height: '100%' }}>
               <CubesBackground />
             </Canvas>
@@ -283,11 +364,7 @@ export default function Home() {
               {depoimentos.map((item, index) => {
                 const angle = index * (360 / totalDepoimentos);
                 return (
-                  <motion.div
-                    key={item.id}
-                    className="absolute inset-0"
-                    style={{ transform: `rotateY(${angle}deg) translateZ(${radius}px)` }}
-                  >
+                  <motion.div key={item.id} className="absolute inset-0" style={{ transform: `rotateY(${angle}deg) translateZ(${radius}px)` }}>
                     <div className="h-full w-full bg-black p-4 md:p-6 rounded-2xl border border-blue-500/40 shadow-[0_0_40px_-10px_rgba(59,130,246,0.4)] flex flex-col [backface-visibility:visible] overflow-hidden">
                       <Quote className="text-blue-500/20 w-6 h-6 md:w-8 md:h-8 absolute top-3 right-3" />
                       <div className="relative z-10 flex flex-col h-full text-left">
@@ -315,6 +392,8 @@ export default function Home() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-32 md:h-32 bg-blue-600/20 blur-[50px] md:blur-[100px] rounded-full pointer-events-none"></div>
           </div>
         </section>
+
+        <FormularioOrcamento />
       </main>
 
       <footer className="border-t border-zinc-800/50 bg-zinc-950/80 backdrop-blur-md py-8 md:py-10 mt-12 relative z-10">
